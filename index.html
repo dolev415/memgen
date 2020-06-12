@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="lib/fontawesome-free-5.13.0-web/css/all.css">
+    <title>Document</title>
+</head>
+
+<body onload="onInit()">
+
+    <header class="flex row space-between">
+        <div class="logo start">memegen</div>
+        <div class="selectors end">
+            <ul class="main-nav flex row space-between clean-list">
+                <!-- <button class="btn-menu">☰</button> -->
+                <li onclick="show(this)" class="about">
+                    <a href="#">About</a>
+                </li>
+                <li onclick="show(this)" class="gallery">
+                    <a href="#">Gallery</a>
+                </li>
+                <li onclick="show(this)" class="meme">
+                    <a href="#">Meme</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <!-- <div class=" about-description flex card-text-container col grow">
+        <h2 class="card-title">Duis aute irure color in henderit in voluptate.</h2>
+        <div class="card-text flex wrap">
+            <p>
+                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commo doconsequat, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...
+            </p>
+            <button class="card-more">Continue Reading</button>
+        </div>
+    </div> -->
+    <div class="flex column space-between">
+        <div class="main-container flex column">
+            <div class="hideAndShow">
+                <div class="sectors center-item flex row">
+                    <div class="canvas-container ">
+                        <canvas id="my-canvas"></canvas>
+                    </div>
+                    <!-- <div class="lines"></div> -->
+                    <div class="controller flex column center-item">
+                        <label>Enter txt <input onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="0"
+        type="text" name="text"></input></label>
+                        <label>Enter txt <input onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="1"
+        type="text" name="text"></input></label>
+
+                        <div class="controller-buttons">
+                            <button onclick="onChangeFontSize(2)" title="Increase font ">A+</button>
+                            <button onclick="onChangeFontSize(-2)" title="Decrease font ">A-</button>
+                            <button onclick="onChangeLineRightLeft(-5)" title="Move Line Right"><i class="fas fa-arrow-right"></i></button>
+                            <button onclick="onChangeLineRightLeft(5)" title="Move Line Left"><i class="fas fa-arrow-left"></i></button>
+                            <button onclick="onChangeLineHeight(-5)" title="Move Line Up"><i class="fa fa-arrow-up"></i></button>
+                            <button onclick="onChangeLineHeight(5)" title="Move Line Up"><i class="fa fa-arrow-down"></i></button>
+                            <button onclick="onSwitchLine()" title="Switch Lines"><img class="btn-img" src="buttons/up-and-down-opposite-double-arrows-side-by-side.png" alt="trash"></button>
+                            <button onclick="clearCanvas()" title="clear canvas"><img class="btn-img" src="buttons/trash.png" alt="trash"></button>
+                        </div>
+
+                        <a class="download-link" href="#" onclick="onDownloadCanvas(this)" download=""><button><i class="fas fa-file-download"></i></button></a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="gallery-container center-item ">
+                <h1 class="gallery-heading">My Gallery</h1>
+                <div class="gallery-imgs ">
+                </div>
+            </div>
+
+        </div>
+        <footer class="main-footer">
+            <div class="logo footer-logo">memgen</div>
+            <p class="copyright">All Rights Reserved 2019</p>
+            <div class="social-container">
+                <ul class="social-nav clean-list">
+                    <li><i class="fab fa-facebook-f" href="facebook"></i></li>
+                    <li><i class="fab fa-twitter" href="#"></i></li>
+                    <li><i class="fas fa-basketball-ball" href="#"></i></li>
+                </ul>
+
+            </div>
+        </footer>
+
+    </div>
+    <script src="js/util.js"></script>
+    <script src="js/storage-service.js"></script>
+    <script src="js/meme-service.js"></script>
+    <script src="js/meme-controller.js"></script>
+</body>
+
+</html>
