@@ -123,6 +123,22 @@ function onDownloadCanvas(elLink) {
     elLink.href = data;
     elLink.download = 'my_img';
 }
+var imageLoader = document.getElementById('imageLoader');
+imageLoader.addEventListener('change', handleImage, false);
+//uploadImage
+function handleImage(e) {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+        var img = new Image();
+        img.onload = function() {
+            img.width = gElCanvas.width;
+            img.height = gElCanvas.height;
+            gCtx.drawImage(img, 0, 0);
+        }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
 // on submit call to this function
 function uploadImg(elForm, ev) {
     ev.preventDefault();

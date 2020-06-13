@@ -81,15 +81,15 @@ canvas {
 }
 
 #my-canvas {
-    width: 14rem;
-    height: 14rem;
+    width: 20rem;
+    height: 20rem;
+    margin-bottom: 2rem;
 }
 
 .canvas-container {
     background-color: rgb(216, 216, 216);
     margin-left: 4rem;
-    width: 14rem;
-    height: 14rem;
+    height: 20rem;
     border: 1px solid black;
     margin-right: 3rem;
 }
@@ -124,7 +124,11 @@ label {
     border: .5px solid lightgray;
     border-radius: 12px;
     background-color: #3d70fc;
-    margin-top: 4rem;
+    margin-top: 1rem;
+}
+
+.uploadPic {
+    border-radius: 100%;
 }
 
 .controller {
@@ -307,12 +311,19 @@ h1 {
     .canvas-container {
         background-color: rgb(216, 216, 216);
         margin: auto;
-        width: 14rem;
-        height: 14rem;
+        width: 17rem;
+        height: 17rem;
         border: 1px solid black;
+    }
+    #my-canvas {
+        width: 17rem;
+        height: 16rem;
     }
     .main-container {
         padding-top: 0.5rem;
+    }
+    .controller {
+        flex-direction: row;
     }
     label {
         justify-content: center;
@@ -325,11 +336,6 @@ h1 {
     .controller {
         align-items: center;
     }
-}
-
-#my-canvas {
-    width: 14rem;
-    height: 14rem;
 }
 
 .gallery-container {
