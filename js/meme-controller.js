@@ -5,16 +5,20 @@ var gCtx;
 var gCurrColor
 var gFillColor
 var gCurrImg
+var gCanDrag;
 
 function onInit() {
+
     gElCanvas = document.getElementById('my-canvas');
+
     gCtx = gElCanvas.getContext('2d');
 
     renderGallery()
-    focusWriting(0);
+
     resizeCanvas();
 
-
+    document.querySelector('.canvas-container').classList.add('hide');
+    document.querySelector('.controller').classList.add('hide');
 }
 
 // rendering the imgs 
@@ -22,7 +26,7 @@ function renderGallery() {
     var imgs = getImgs()
 
     var strHtmls = imgs.map(img => {
-        return `<img onclick="drawImg(this) "src="${img.url}" alt="${img.keywords}"  >`
+        return `<img onclick="drawImg(this)"src="${img.url}" alt="${img.keywords}"  >`
     })
     console.log(strHtmls)
     document.querySelector('.gallery-imgs').innerHTML = strHtmls.join('')
@@ -44,6 +48,10 @@ function renderMeme() {
 
 // draw the chosen img on canvas
 function drawImg(elImg) {
+    document.querySelector('.controller').classList.remove('hide');
+    document.querySelector('.controller').classList.add('flex');
+    document.querySelector('.canvas-container').classList.remove('hide');
+    document.querySelector('.gallery-container').classList.add('hide');
     gCurrImg = elImg
     gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height);
 }
@@ -53,9 +61,9 @@ function drawTxt(line) {
     gCtx.font = `${line.size}px impact`;
     gCtx.strokeFill = 'white';
     gCtx.textAlign = line.align;
-    gCtx.strokeStyle = line.color;
+    gCtx.strokeStyle = line.borderColor;
     gCtx.strokeText(line.txt, line.x, line.y);
-    gCtx.fillStyle = 'white';
+    gCtx.fillStyle = line.textColor
     gCtx.fillText(line.txt, line.x, line.y);
 }
 
@@ -67,23 +75,33 @@ function resizeCanvas() {
     gElCanvas.height = elContainer.offsetHeight;
 }
 
-//for adding more and more lines......
+function onWheelFontSize(ev) {
+    ev.preventDefault();
+    if (ev.wheelDelta < 0) changeFontSize(-2);
+    else changeFontSize(2);
+    renderMeme();
+    if (getMeme().lines[getMeme().selectedLineIdx].size < 0) return;
+    document.querySelector('.font-size').innerText = getMeme().lines[getMeme().selectedLineIdx].size
+    document.querySelector('[name="fontSize"]').value = getMeme().lines[getMeme().selectedLineIdx].size;
+}
 
-// function renderLines(nextLineIdx) {
-//     var elLines = document.querySelector('.lines');
-//     var strHtml =
-//         `<label>Enter txt<input onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="${nextLineIdx}"
-//         type="text" name="text"></input></label>`
-//     var elLines = document.querySelector('.lines')
-//     elLines.innerHTML += strHtml;
-// }
+function onDragLine(ev) {
+    if (ev.type === 'click') {
+        setInputText()
+        renderMeme();
+    } else {
+        var offsetY = ev.offsetY;
+        getMeme().lines.forEach((line, idx) => {
+            if (idx === getMeme().selectedLineIdx) gCanDrag = true;
+            else if (offsetY >= (line.y - line.size) && offsetY <= line.y) {
+                getMeme().selectedLineIdx = idx;
+                renderMeme();
+                gCanDrag = true;
+            }
+        })
+    }
 
-// function onAddLine() {
-
-//     var nextLineIdx = getNextLineIdx();
-//     console.log('yes' + nextLineIdx)
-//     renderLines(nextLineIdx);
-// }
+}
 
 function onUpdateSelectedLine(elInput) {
     updateSelectedLine(elInput.id)
@@ -105,6 +123,37 @@ function onDownloadCanvas(elLink) {
     elLink.href = data;
     elLink.download = 'my_img';
 }
+// on submit call to this function
+function uploadImg(elForm, ev) {
+    ev.preventDefault();
+    document.getElementById('imgData').value = gElCanvas.toDataURL("image/jpeg");
+
+    // A function to be called if request succeeds
+    function onSuccess(uploadedImgUrl) {
+        uploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+        document.querySelector('.share-container').innerHTML = `
+        <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
+           Share   
+        </a>`
+    }
+
+    doUploadImg(elForm, onSuccess);
+}
+
+function doUploadImg(elForm, onSuccess) {
+    var formData = new FormData(elForm);
+    fetch('http://ca-upload.com/here/upload.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(function(res) {
+            return res.text()
+        })
+        .then(onSuccess)
+        .catch(function(err) {
+            console.error(err)
+        })
+}
 //increase/decrease font
 function onChangeFontSize(diff) {
     changeFontSize(diff)
@@ -115,6 +164,11 @@ function onChangeLineHeight(diff) {
     changeLineHeight(diff)
     renderMeme()
 }
+//move the line right and left
+function onChangeLineRightLeft(diff) {
+    changeLinerightLeft(diff)
+    renderMeme()
+}
 //change the focus of the page (the chupchik)
 function onSwitchLine() {
     switchLines()
@@ -122,43 +176,70 @@ function onSwitchLine() {
     focusWriting(meme.selectedLineIdx)
     renderMeme()
 }
-//show gallery and hide meme and about or the opposite
-// function show(elList) {
 
-//     var testClass = elList.className;
-//     var elController = document.querySelector('.sectors');
-//     var elGallery = document.querySelector('.gallery-container');
-//     var elAbout = document.querySelector('.about-description');
-//     switch (testClass) {
-//         case "gallery":
-//             elController.classList.add('hide')
-//             elGallery.classList.remove('hide')
-//             break;
-//         case "about":
-//             elAbout.classList.add('flex')
-//             break;
-//         case "meme":
-//             elController.classList.add('flex')
-//             elGallery.classList.add('hide')
-//             break;
-//     }
-// }
+function onChangeBorderColor(color) {
+    changeBorderColor(color)
+    renderMeme()
+}
+
+function onChangeTextColor(color) {
+    changeTextColor(color)
+    renderMeme()
+}
+
+function toggleDrag() {
+    gCanDrag = !gCanDrag;
+}
+
+function stopDrag() {
+    gCanDrag = false;
+}
+
+function dragLines(ev) {
+    if (!gCanDrag) return;
+
+    ev.preventDefault();
+    const line = getMeme().lines[getMeme().selectedLineIdx];
+    line.x = ev.offsetX;
+    line.y = ev.offsetY;
+    renderMeme()
+}
+
+function move(keyboardEvent) {
+    console.log(keyboardEvent.KeyCode)
+    switch (keyboardEvent.code) {
+        case 'ArrowUp':
+            onChangeLineHeight(-5)
+            break;
+        case 'ArrowDown':
+            onChangeLineHeight(5)
+            break;
+        case 'ArrowLeft':
+            onChangeLineRightLeft(-5)
+            break;
+        case 'ArrowRight':
+            onChangeLineRightLeft(5)
+            break;
+        default:
+            return null;
+    }
+}
 
 function show(li) {
-    console.log(li)
     var liClass = li.className;
-    var elController = document.querySelector('.hideAndShow');
-    var elGallery = document.querySelector('.gallery-container');
-    console.log(elGallery)
-    console.log(elController)
     switch (liClass) {
         case "gallery":
-            elGallery.classList.remove('hide');
-            elController.classList.add('hide');
+            document.querySelector('.controller').classList.remove('flex');
+            document.querySelector('.controller').classList.add('hide');
+            document.querySelector('.canvas-container').classList.add('hide');
+            document.querySelector('.gallery-container').classList.remove('hide');
             break;
+
         case "meme":
-            elGallery.classList.add('hide');
-            elController.classList.remove('hide');
+            document.querySelector('.controller').classList.remove('hide');
+            document.querySelector('.controller').classList.add('flex');
+            document.querySelector('.canvas-container').classList.remove('hide');
+            document.querySelector('.gallery-container').classList.add('hide');
             break;
     }
 

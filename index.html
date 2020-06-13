@@ -9,26 +9,26 @@
     <title>Document</title>
 </head>
 
-<body onload="onInit()">
-
-    <header class="flex row space-between">
-        <div class="logo start">memegen</div>
-        <div class="selectors end">
-            <ul class="main-nav flex row space-between clean-list">
-                <!-- <button class="btn-menu">☰</button> -->
-                <li onclick="show(this)" class="about">
-                    <a href="#">About</a>
-                </li>
-                <li onclick="show(this)" class="gallery">
-                    <a href="#">Gallery</a>
-                </li>
-                <li onclick="show(this)" class="meme">
-                    <a href="#">Meme</a>
-                </li>
-            </ul>
-        </div>
-    </header>
-    <!-- <div class=" about-description flex card-text-container col grow">
+<body onkeydown="move(event)" onload="onInit()">
+    <div class="site-container">
+        <header class="flex row space-between">
+            <div class="logo start">memegen</div>
+            <div class="selectors end">
+                <ul class="main-nav flex row space-between clean-list">
+                    <!-- <button class="btn-menu">☰</button> -->
+                    <li onclick="show(this)" class="about">
+                        <a href="#">About</a>
+                    </li>
+                    <li onclick="show(this)" class="gallery">
+                        <a href="#">Gallery</a>
+                    </li>
+                    <li onclick="show(this)" class="meme">
+                        <a href="#">Meme</a>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <!-- <div class=" about-description flex card-text-container col grow">
         <h2 class="card-title">Duis aute irure color in henderit in voluptate.</h2>
         <div class="card-text flex wrap">
             <p>
@@ -39,56 +39,72 @@
             <button class="card-more">Continue Reading</button>
         </div>
     </div> -->
-    <div class="flex column space-between">
-        <div class="main-container flex column">
-            <div class="hideAndShow">
-                <div class="sectors center-item flex row">
-                    <div class="canvas-container ">
-                        <canvas id="my-canvas"></canvas>
+        <div class="flex column space-between">
+            <div class="main-container flex column grow">
+
+                <div class="sectors space-between flex row">
+                    <div class="canvas-container column">
+                        <canvas id="my-canvas" onmousewheel="onWheelFontSize(event)" onmousedown="onSwitchLine(event)" onmousemove="dragLines(event)" onmouseup="toggleDrag()"></canvas>
+                        <div class="shares flex row">
+                            <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                                <input name="img" id="imgData" type="hidden" />
+                                <button class="btn publish-btn" type="submit" onclick="onSuccess()"><i class="fas fa-upload"></i></button>
+                                <div class="share-container"></div>
+                            </form>
+                            <a class="download-link" href="#" onclick="onDownloadCanvas(this)" download=""><button><i class="fas fa-file-download"></i></button></a>
+                        </div>
                     </div>
                     <!-- <div class="lines"></div> -->
-                    <div class="controller flex column center-item">
-                        <label>Enter txt <input onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="0"
+                    <div class="controller  column ">
+                        <label>Enter txt <input placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="0"
         type="text" name="text"></input></label>
-                        <label>Enter txt <input onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="1"
+                        <label>Enter txt <input placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="1"
         type="text" name="text"></input></label>
+
+                        <label>Border Color
+            <input type="color" onchange="onChangeBorderColor(this.value)">
+         </label>
+                        <label>Text Color
+            <input type="color" onchange="onChangeTextColor(this.value)">
+         </label>
 
                         <div class="controller-buttons">
                             <button onclick="onChangeFontSize(2)" title="Increase font ">A+</button>
                             <button onclick="onChangeFontSize(-2)" title="Decrease font ">A-</button>
-                            <button onclick="onChangeLineRightLeft(-5)" title="Move Line Right"><i class="fas fa-arrow-right"></i></button>
-                            <button onclick="onChangeLineRightLeft(5)" title="Move Line Left"><i class="fas fa-arrow-left"></i></button>
+                            <button onclick="onChangeLineRightLeft(5)" title="Move Line Right"><i class="fas fa-arrow-right"></i></button>
+                            <button onclick="onChangeLineRightLeft(-5)" title="Move Line Left"><i class="fas fa-arrow-left"></i></button>
                             <button onclick="onChangeLineHeight(-5)" title="Move Line Up"><i class="fa fa-arrow-up"></i></button>
-                            <button onclick="onChangeLineHeight(5)" title="Move Line Up"><i class="fa fa-arrow-down"></i></button>
+                            <button onclick="onChangeLineHeight(5)" title="Move Line down"><i class="fa fa-arrow-down"></i></button>
                             <button onclick="onSwitchLine()" title="Switch Lines"><img class="btn-img" src="buttons/up-and-down-opposite-double-arrows-side-by-side.png" alt="trash"></button>
                             <button onclick="clearCanvas()" title="clear canvas"><img class="btn-img" src="buttons/trash.png" alt="trash"></button>
                         </div>
 
-                        <a class="download-link" href="#" onclick="onDownloadCanvas(this)" download=""><button><i class="fas fa-file-download"></i></button></a>
 
                     </div>
                 </div>
-            </div>
-            <div class="gallery-container center-item ">
-                <h1 class="gallery-heading">My Gallery</h1>
-                <div class="gallery-imgs ">
+
+
+                <div class="gallery-container">
+                    <h1 class="gallery-heading center-item">My Gallery</h1>
+                    <div class="gallery-imgs">
+                    </div>
                 </div>
+
             </div>
+            <footer class="main-footer">
+                <div class="logo footer-logo">memgen</div>
+                <p class="copyright">All Rights Reserved 2019</p>
+                <div class="social-container">
+                    <ul class="social-nav clean-list">
+                        <li><i class="fab fa-facebook-f" href="facebook"></i></li>
+                        <li><i class="fab fa-twitter" href="#"></i></li>
+                        <li><i class="fas fa-basketball-ball" href="#"></i></li>
+                    </ul>
+
+                </div>
+            </footer>
 
         </div>
-        <footer class="main-footer">
-            <div class="logo footer-logo">memgen</div>
-            <p class="copyright">All Rights Reserved 2019</p>
-            <div class="social-container">
-                <ul class="social-nav clean-list">
-                    <li><i class="fab fa-facebook-f" href="facebook"></i></li>
-                    <li><i class="fab fa-twitter" href="#"></i></li>
-                    <li><i class="fas fa-basketball-ball" href="#"></i></li>
-                </ul>
-
-            </div>
-        </footer>
-
     </div>
     <script src="js/util.js"></script>
     <script src="js/storage-service.js"></script>
