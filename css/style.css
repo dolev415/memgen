@@ -32,6 +32,7 @@ body {
 
 header {
     height: 5rem;
+    width: 100%;
     padding: 0;
     background-color: #ff7f00;
     color: white;
@@ -131,16 +132,12 @@ label {
     border-radius: 100%;
 }
 
-.controller.column {
-    max-height: 22rem;
-}
-
 .controller-buttons {
     border: 2rem;
     border-radius: 30%;
     align-items: center;
     width: 10rem;
-    height: 10rem;
+    height: 5rem;
     display: flex;
     flex-direction: row;
 }
@@ -333,7 +330,7 @@ h1 {
     }
     .main-container {
         border: 1px solid #e1e0e0;
-        min-height: 38.7rem;
+        min-height: 44.7rem;
         align-items: center;
     }
     label {
