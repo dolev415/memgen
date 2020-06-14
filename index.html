@@ -35,22 +35,18 @@
                     <div class="canvas-container hide column">
                         <input type="file" id="imageLoader" name="imageLoader" class="input-file" />
                         <canvas id="my-canvas" onmousewheel="onWheelFontSize(event)" onmousedown="onSwitchLine(event)" onmousemove="dragLines(event)" onmouseup="toggleDrag()"></canvas>
-
                     </div>
                     <div class="controller  column hide">
                         <label>Enter txt <input value="Insert Text Here" placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="0"
         type="text" id='1'></input></label>
                         <label>Enter txt <input value="Insert Text Here" placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="1"
         type="text" id='2'></input></label>
-
-
                         <label>Border Color
             <input type="color" onchange="onChangeBorderColor(this.value)">
          </label>
                         <label>Text Color
             <input type="color" onchange="onChangeTextColor(this.value)">
          </label>
-
                         <div class="controller-buttons">
                             <div class="first"> <button onclick="onChangeFontSize(2)" title="Increase font ">A+</button>
                                 <button onclick="onChangeFontSize(-2)" title="Decrease font ">A-</button></div>

@@ -33,7 +33,7 @@ var gMeme = {
             borderColor: 'black',
             textColor: 'white',
             txt: 'insert text here',
-            size: 50,
+            size: 20,
             align: 'left',
             x: 10,
             y: 50
@@ -42,7 +42,7 @@ var gMeme = {
             borderColor: 'black',
             textColor: 'white',
             txt: 'insert text here',
-            size: 30,
+            size: 20,
             align: 'left',
             x: 80,
             y: 200
