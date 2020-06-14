@@ -28,39 +28,22 @@
                 </ul>
             </div>
         </header>
-        <!-- <div class=" about-description flex card-text-container col grow">
-        <h2 class="card-title">Duis aute irure color in henderit in voluptate.</h2>
-        <div class="card-text flex wrap">
-            <p>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commo doconsequat, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur...
-            </p>
-            <button class="card-more">Continue Reading</button>
-        </div>
-    </div> -->
         <div class="flex column space-between">
             <div class="main-container flex column grow">
 
                 <div class="sectors space-between flex row">
-                    <div class="canvas-container column">
+                    <div class="canvas-container hide column">
                         <input type="file" id="imageLoader" name="imageLoader" class="input-file" />
                         <canvas id="my-canvas" onmousewheel="onWheelFontSize(event)" onmousedown="onSwitchLine(event)" onmousemove="dragLines(event)" onmouseup="toggleDrag()"></canvas>
 
                     </div>
+                    <div class="controller  column hide">
+                        <label>Enter txt <input value="Insert Text Here" placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="0"
+        type="text" id='1'></input></label>
+                        <label>Enter txt <input value="Insert Text Here" placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="1"
+        type="text" id='2'></input></label>
 
-                    <!-- <div class="lines"></div> -->
-                    <div class="controller  column ">
-                        <label>Enter txt <input placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="0"
-        type="text" name="text"></input></label>
-                        <label>Enter txt <input placeholder="Insert Text Here" onclick="onUpdateSelectedLine(this)" onkeyup="onUpdateSelectedTxt(this)" id="1"
-        type="text" name="text"></input></label>
-                        <a class="download-link" href="#" onclick="onDownloadCanvas(this)" download=""><button><i class="fas fa-file-download"></i></button></a>
-                        <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
-                            <input name="img" id="imgData" type="hidden" />
-                            <button class="btn publish-btn" type="submit" onclick="onSuccess()"><i class="fas fa-upload"></i></button>
-                            <div class="share-container"></div>
-                        </form>
+
                         <label>Border Color
             <input type="color" onchange="onChangeBorderColor(this.value)">
          </label>
@@ -69,25 +52,31 @@
          </label>
 
                         <div class="controller-buttons">
-                            <button onclick="onChangeFontSize(2)" title="Increase font ">A+</button>
-                            <button onclick="onChangeFontSize(-2)" title="Decrease font ">A-</button>
-                            <button onclick="onChangeLineRightLeft(5)" title="Move Line Right"><i class="fas fa-arrow-right"></i></button>
-                            <button onclick="onChangeLineRightLeft(-5)" title="Move Line Left"><i class="fas fa-arrow-left"></i></button>
-                            <button onclick="onChangeLineHeight(-5)" title="Move Line Up"><i class="fa fa-arrow-up"></i></button>
-                            <button onclick="onChangeLineHeight(5)" title="Move Line down"><i class="fa fa-arrow-down"></i></button>
-                            <button onclick="onSwitchLine()" title="Switch Lines"><img class="btn-img" src="buttons/up-and-down-opposite-double-arrows-side-by-side.png" alt="trash"></button>
-                            <button onclick="clearCanvas()" title="clear canvas"><img class="btn-img" src="buttons/trash.png" alt="trash"></button>
+                            <div class="first"> <button onclick="onChangeFontSize(2)" title="Increase font ">A+</button>
+                                <button onclick="onChangeFontSize(-2)" title="Decrease font ">A-</button></div>
+                            <div class="second"><button onclick="onChangeLineRightLeft(5)" title="Move Line Right"><i class="fas fa-arrow-right"></i></button>
+                                <button onclick="onChangeLineRightLeft(-5)" title="Move Line Left"><i class="fas fa-arrow-left"></i></button></div>
+                            <div class="third"> <button onclick="onChangeLineHeight(-5)" title="Move Line Up"><i class="fa fa-arrow-up"></i></button>
+                                <button onclick="onChangeLineHeight(5)" title="Move Line down"><i class="fa fa-arrow-down"></i></button></div>
+                            <div class="fourth"><button class="switch-lines-btn" title="Switch Lines" onclick="onSwitchLine(event)"><img class="btn-img" src="buttons/up-and-down-opposite-double-arrows-side-by-side.png" alt="trash"></button>
+                                <button onclick="clearCanvas()" title="clear canvas"><img class="btn-img" src="buttons/trash.png" alt="trash"></button></div>
+
                         </div>
 
-
+                        <div class="share-container">
+                            <a class="download-link" href="#" onclick="onDownloadCanvas(this)" download=""><button><i class="fas fa-file-download"></i></button></a>
+                            <form action="" method="POST" enctype="multipart/form-data" onsubmit="uploadImg(this, event)">
+                                <input name="img" id="imgData" type="hidden" />
+                                <button class="btn publish-btn" type="submit" onclick="onSuccess()"><i class="fas fa-upload"></i></button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-
-
-                <div class="gallery-container">
-                    <h1 class="gallery-heading center-item">My Gallery</h1>
-                    <div class="gallery-imgs">
+                    <div class="gallery-container">
+                        <h1 class="gallery-heading center-item">My Gallery</h1>
+                        <div class="gallery-imgs">
+                        </div>
                     </div>
+
                 </div>
 
             </div>

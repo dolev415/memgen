@@ -15,10 +15,6 @@ function onInit() {
 
     renderGallery()
 
-    resizeCanvas();
-
-    document.querySelector('.canvas-container').classList.add('hide');
-    document.querySelector('.controller').classList.add('hide');
 }
 
 // rendering the imgs 
@@ -38,7 +34,7 @@ function focusWriting(lineIdx) {
 }
 // rendering the meme 
 function renderMeme() {
-    clearCanvas()
+    // clearCanvas()
     drawImg(gCurrImg)
     var meme = getMeme();
     meme.lines.forEach(line => {
@@ -48,12 +44,20 @@ function renderMeme() {
 
 // draw the chosen img on canvas
 function drawImg(elImg) {
+
+
     document.querySelector('.controller').classList.remove('hide');
     document.querySelector('.controller').classList.add('flex');
     document.querySelector('.canvas-container').classList.remove('hide');
     document.querySelector('.gallery-container').classList.add('hide');
+    resizeCanvas()
     gCurrImg = elImg
     gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height);
+    var meme = getMeme();
+    meme.lines.forEach(line => {
+        drawTxt(line)
+    });
+
 }
 // draw the chosen text only on image, cant draw on cleared canvas
 function drawTxt(line) {
@@ -78,22 +82,31 @@ function resizeCanvas() {
 function onWheelFontSize(ev) {
     ev.preventDefault();
     if (ev.wheelDelta < 0) changeFontSize(-2);
-    else changeFontSize(2);
+    else changeFontSize(1);
     renderMeme();
     if (getMeme().lines[getMeme().selectedLineIdx].size < 0) return;
     document.querySelector('.font-size').innerText = getMeme().lines[getMeme().selectedLineIdx].size
     document.querySelector('[name="fontSize"]').value = getMeme().lines[getMeme().selectedLineIdx].size;
 }
 
-function onDragLine(ev) {
+
+function onSwitchLine(ev) {
+    switchLines()
+    var meme = getMeme();
+    focusWriting(meme.selectedLineIdx)
+    renderMeme()
     if (ev.type === 'click') {
-        setInputText()
         renderMeme();
     } else {
         var offsetY = ev.offsetY;
+        console.log(offsetY);
         getMeme().lines.forEach((line, idx) => {
+            console.log('line.y - line.size:' + (line.y - line.size))
+            console.log('line.size' + (line.size))
+            console.log('line.y:' + (line.y))
+            console.log('offsetY:' + (offsetY))
             if (idx === getMeme().selectedLineIdx) gCanDrag = true;
-            else if (offsetY >= (line.y - line.size) && offsetY <= line.y) {
+            else if (offsetY >= (line.y + line.size) && offsetY <= line.y) {
                 getMeme().selectedLineIdx = idx;
                 renderMeme();
                 gCanDrag = true;
@@ -102,6 +115,7 @@ function onDragLine(ev) {
     }
 
 }
+
 
 function onUpdateSelectedLine(elInput) {
     updateSelectedLine(elInput.id)
@@ -131,13 +145,20 @@ function handleImage(e) {
     reader.onload = function(event) {
         var img = new Image();
         img.onload = function() {
-            img.width = gElCanvas.width;
-            img.height = gElCanvas.height;
-            gCtx.drawImage(img, 0, 0);
+
+            gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
         }
         img.src = event.target.result;
+        // var imgObj = createImg(g, img.src, 'blabla');
+        // console.log(imgObj)
+        // gImgs.push(imgObj);
+        // var elImg = `<img src="${imgObj.url}" alt="${imgObj.keywords}"  >`
+        // console.log(elImg)
+        // drawImg(elImg);
     }
     reader.readAsDataURL(e.target.files[0]);
+    drawImg(this)
+    resizeCanvas();
 }
 // on submit call to this function
 function uploadImg(elForm, ev) {
@@ -154,11 +175,12 @@ function uploadImg(elForm, ev) {
     }
 
     doUploadImg(elForm, onSuccess);
+
 }
 
 function doUploadImg(elForm, onSuccess) {
     var formData = new FormData(elForm);
-    fetch('http://ca-upload.com/here/upload.php', {
+    fetch('https://ca-upload.com/here/upload.php', {
             method: 'POST',
             body: formData
         })
@@ -186,12 +208,12 @@ function onChangeLineRightLeft(diff) {
     renderMeme()
 }
 //change the focus of the page (the chupchik)
-function onSwitchLine() {
-    switchLines()
-    var meme = getMeme();
-    focusWriting(meme.selectedLineIdx)
-    renderMeme()
-}
+// function onSwitchLine() {
+//     switchLines()
+//     var meme = getMeme();
+//     focusWriting(meme.selectedLineIdx)
+//     renderMeme()
+// }
 
 function onChangeBorderColor(color) {
     changeBorderColor(color)
@@ -222,7 +244,7 @@ function dragLines(ev) {
 }
 
 function move(keyboardEvent) {
-    console.log(keyboardEvent.KeyCode)
+
     switch (keyboardEvent.code) {
         case 'ArrowUp':
             onChangeLineHeight(-5)
@@ -252,6 +274,7 @@ function show(li) {
             break;
 
         case "meme":
+
             document.querySelector('.controller').classList.remove('hide');
             document.querySelector('.controller').classList.add('flex');
             document.querySelector('.canvas-container').classList.remove('hide');
