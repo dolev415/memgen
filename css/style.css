@@ -216,6 +216,7 @@ h1 {
 /* footer */
 
 .main-footer {
+    height: 7.2rem;
     text-align: center;
     background-color: #ff7f00;
     box-shadow: inset 0 0.1rem 0 #e1e0e0;
